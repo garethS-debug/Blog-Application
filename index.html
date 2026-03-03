@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="./css/style.css">
         <title>Home</title>
         <script src="js/theme-toggle.js" defer></script>
+        <script src="js/login-form.js" defer></script>
     </head>
     <body>
     
@@ -26,11 +27,11 @@
             <img src="./logo/logo_500px.svg" alt="Gareth Swarte Logo" class="logo-img">
             <!-- Navigation links -->
             <section id="nav-links" class="nav-links">
-            <a class="menu" href="./index.html">Home</a>
-            <a class="menu" href="#">Services</a>
-            <a class="menu" href="./projects.html">Projects</a>
-            <a class="menu" href="./about.html">About</a>
-            <a class="menu" href="./contact.html">Contact</a>
+            <a class="menu" onclick="closeForm()" href="./index.html" >Home</a>
+            <a class="menu" href="#">Posts</a>
+            <a class="menu" onclick="openForm()" href="javascript:void(0)">Login</a>
+            <!-- <a class="menu" href="./about.html">About</a>
+            <a class="menu" href="./contact.html">Contact</a> -->
             </section>
 
        
@@ -40,7 +41,21 @@
 
     <div class="background">
     <main>
+<!-- The form -->
+<div class="form-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <h1>Login</h1>
 
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <button type="submit" class="btn">Login</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
         <section class="hero">
         <div class="hero__inner">
             <!-- LEFT -->
