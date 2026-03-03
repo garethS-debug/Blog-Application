@@ -1,0 +1,656 @@
+/* Importing the Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+@font-face {
+  font-family: 'MyBrandFont';
+  src: url('../font/SolaronaDemo-6R83Y.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Defining CSS variables for consistent theming throughout the stylesheet */
+:root{
+
+    --bg-color:   #5f5f5f; /* Defining a background color variable */
+    --second-bg-color: #f0f0f0; /* Defining a secondary background color variable */
+    --main-color: #007bff; /* Defining a main color variable */
+    --white-color: #fff; /* Defining a text color variable */
+    --disabled-color: #999; /* Defining a disabled state color variable */
+	 background-color: #f3f3f3;
+     --bg-gradient: linear-gradient(to bottom, #ffffff 0%, #cdcdcd 100%);
+    --text: rgb(30, 30, 30);
+  --btn-bg: #ff0082;       /* bubble color */
+  --btn-text: #fff;        /* text color */
+  --btn-fill: #353535;     /* liquid fill color */
+
+    --nav-bg: rgba(255,255,255,0.6); /* semi-transparent background for navigation */
+    --nav-text: #181818; /* default nav text color / / ... */
+    --contact-btn-bg: #2e2e2e; /* contact button background color */
+    --contact-btn-bg-hover: #b26df8; /* contact button background color on hover */
+    --contact-btn-text: #fff; /* contact button text color */
+    --contact-form-bg: #bcbcbc; /* contact form background color */
+}
+
+
+/* Universal selector to apply styles to all elements */
+*{ 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    text-decoration: none; /* Removes underlines from links */
+    border: none; /* Removes default borders */
+    outline: none; /* Removes default outlines */
+    font-family: "Poppins", sans-serif; /* Applying the Poppins font to all elements on the webpage */
+
+}
+
+.background {
+  display: flex;
+  min-height: 100vh;
+}
+
+body{
+    background: var(--bg-gradient);
+    color: var(--text, #222);
+    
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.site-footer {
+  margin-top: auto;
+}
+
+
+
+/*---------------------Dark Mode------------------------*/
+
+/* Styling for dark mode */
+
+[data-theme="dark"]{
+  --bg-gradient: linear-gradient(to bottom, #212121 0%, #0d0d0d 100%);
+  --text: #e6eef6;
+    --nav-bg: rgba(216, 216, 216, 0.8);
+    --nav-text: #e6eef6; /* nav text for dark mode */
+     --contact-btn-bg: #c4c4c4; /* contact button background color */
+    --contact-btn-bg-hover: #ff84f3; /* contact button background color on hover */
+        --contact-btn-text: #2d2d2d; /* contact button text color */
+        --contact-form-bg: #eaeaea; /* contact form background color */
+}
+/*-------------------------------------------------*/
+
+
+
+.headerName{
+    display: block;
+    margin: 0 auto;
+    color : #007bff;
+    padding: 40px;
+    text-align: center; 
+}
+
+header nav {
+    text-align: center;
+      color: var(--nav-text);
+        transition: color .2s ease;
+}
+
+
+
+.menu{
+    display: inline-block;
+    Margin: 0 10px;
+    color: var(--nav-text);
+    padding: 20px;
+    margin-right: 10px;
+}
+/*logo image styling */
+.logo-img {
+    display: block;
+    width: 160px;       /* desired logo width — adjust as needed */
+    max-width: 100%;    /* keeps it responsive on small screens */
+    height: auto;
+    padding: 12px 20px; /* control padding around the logo */
+    margin: 0 auto;     /* center horizontally */
+    transform: scale(0.75);
+}
+.logo-dark {
+    display: block;
+    width: 160px;       /* desired logo width — adjust as needed */
+    max-width: 100%;    /* keeps it responsive on small screens */
+    height: auto;
+    padding: 12px 20px; /* control padding around the logo */
+    margin: 0 auto;     /* center horizontally */
+    transform: scale(0.75);
+}
+
+.aboutMe{
+    text-align: center;
+    padding: 50px;
+    color : #333333;
+}
+
+/*  Hero Section Styling  */
+
+.hero{
+    background:none;          /* full width background */
+    padding: 80px 74px;
+  /* left 50% red, right 50% transparent */
+
+}
+
+
+/* Content inside the Hero section */
+.hero__content {
+    color: var(--text); /*variable linked to dark mode */
+    text-align: left;
+    font-size: 18px;
+    
+}
+
+.hero_name{
+    font-size: 88px;
+    line-height: 0.98;   /* reduces the vertical gap between lines */
+    font-weight: bold;
+    margin-bottom: 16px;
+    font-family: 'MyBrandFont', sans-serif;
+}
+
+.hero__inner{
+  max-width: 1200px;           /* keeps content “in” from the page edges */
+  margin: 0 auto;              /* centers the whole hero block */
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr; /* left can shrink */
+  gap: 1px;
+  align-items: center;
+}
+
+.hero__content{
+  justify-self: start;         /* pins the text to the left side of its column */
+}
+
+.hero__visual {
+  position: relative;
+  justify-self: end; /* keeps the visual on the right column */
+  align-self: center;
+}
+
+
+.hero__visual img{
+  position: relative; /* remove absolute positioning */
+  width: 100%;
+  height: auto;
+  max-width: 420px; /* constrain size so it scales down */
+  display: block;
+  margin: 0;
+
+}
+
+/* stack earlier and center the visual when space is tight */
+@media (max-width: 900px) {
+  .hero__inner{
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .hero__content {
+    justify-self: stretch;
+  }
+  .hero__visual {
+    justify-self: center;
+    width: 100%;
+  }
+  .hero__visual img {
+    max-width: 360px;
+    min-width: 0; /* allow natural shrink when stacked */
+    margin: 0 auto;
+    position: static;
+  }
+}
+
+
+
+/* -------------Contact form--------------------------*/
+
+/*-------------------------------------------------*/
+/* Buttons */
+
+.btn {
+  position: relative;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(73, 73, 73);
+  background: none;
+  border: 2px solid none;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+    display: block;
+  margin: 40px auto; /* centers horizontally  */
+}
+
+.liquid {
+  background: linear-gradient(#353535 0 0) no-repeat calc(200% - var(--p, 0%))
+    100% / 200% var(--p, 0.2em);
+  transition: 0.3s var(--t, 0s),
+    background-position 0.3s calc(0.3s - var(--t, 0s));
+}
+
+.liquid:hover {
+  --p: 100%;
+  --t: 0.3s;
+  color: #fff;
+}
+
+
+
+/* Toggle Button */
+
+
+
+/*
+
+/* FooterWavy Page effect */
+
+
+/*-------------------------------------------------*/
+/*contact Form-------------------------------*/
+/* html, body {
+  background: #8870FF;
+
+} */
+
+/* .container {
+  background: #fff;
+
+} */
+.contact_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Allow swapping order without editing HTML: add class "swap-order" */
+.contact_container.swap-order {
+  flex-direction: row-reverse;
+}
+
+.contact_picture-container {
+  flex: 0 0 44%;
+  max-width: 44%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scale: 0.7;
+}
+
+.contact_picture img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 6px;
+  transition: transform 300ms ease;
+}
+
+.contact-form-container {
+  flex: 1 1 52%;
+  max-width: 52%;
+  min-width: 280px;
+}
+
+.contact-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-header {
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.email-input {
+  border: none;
+  outline: none;
+  background: var(--contact-form-bg);
+  padding: 20px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 100%;
+}
+
+.message {
+  border: none;
+  outline: none;
+  resize: none;
+  background: var(--contact-form-bg);
+  padding: 20px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 100%;
+}
+
+.submit {
+  border: none;
+  outline: none;
+  color: var(--contact-btn-text);
+  width: 100%;
+  padding: 20px;
+  background: var(--contact-btn-bg);
+  font-size: 100%;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: transform 300ms 0s cubic-bezier(0, 0.23, 0.29, 2.45);
+}
+
+.submit:hover {
+  cursor: pointer;
+  background: var(--contact-btn-bg-hover);
+  transform: translateY(-2px);
+}
+
+/* Slight hero-like scale on large viewports */
+@media (min-width: 1100px) {
+  .contact_picture img { transform: scale(1.04); }
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 900px) {
+  .contact_container { flex-direction: column; }
+  .contact_picture-container,
+  .contact-form-container { flex-basis: 100%; max-width: 100%; }
+  .contact_picture img { max-width: 360px; margin: 0 auto; }
+}
+/*-------------------------------------------------*/
+
+
+/*-------Flip----*/
+
+/* @import url('https://fonts.googleapis.com/css?family=Roboto:700'); */
+#homepage-flip-container {
+  color: #3b3b3b;
+  text-transform: uppercase;
+  font-size: 36px;
+  /* font-weight: bold; */
+  padding-top: 200px;
+  position: fixed;
+  width: 100%;
+  bottom: 45%;
+  display: block;
+  /* Scaling - transform happens after the layout is calculated */
+  transform: scale(1.5);
+  transform-origin: center;
+
+ font-family: 'MyBrandFont', sans-serif;
+  font-weight: normal;
+}
+body {
+  margin:0px;
+  text-align:center;
+}
+
+
+#flip {
+  height:50px;
+  overflow:hidden;
+}
+
+#flip > div > div {
+  color:#fff;
+  padding:4px 12px;
+  height:45px;
+  margin-bottom:45px;
+  display:inline-block;
+}
+
+#flip div:first-child {
+  animation: show 5s linear infinite;
+}
+
+#flip div div {
+  background:#42c58a;
+}
+
+#flip div:first-child div {
+  background:#4ec7f3;
+}
+#flip div:last-child div {
+  background:#DC143C;
+}
+
+@keyframes show {
+  0% {margin-top:-270px;}
+  5% {margin-top:-180px;}
+  33% {margin-top:-180px;}
+  38% {margin-top:-90px;}
+  66% {margin-top:-90px;}
+  71% {margin-top:0px;}
+  99.99% {margin-top:0px;}
+  100% {margin-top:-270px;}
+}
+
+/* p {
+  position:fixed;
+  width:100%;
+  bottom:30px;
+  font-size:12px;
+  color:#999;
+  margin-top:200px;
+} */
+
+
+/*-------------------------------------------------*/
+
+
+/*-------------------------------------------------*/
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Card wrapper */
+.project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* Image */
+.project-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay */
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Hover trigger */
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+/* Button */
+.project-btn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  background: #fff;
+  color: #000;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+/* Toggle control  for dark mode */
+.toggle-control {
+  display: block;
+  position: relative;
+  padding-left: 100px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  margin: 0;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  transform-origin: top right;
+  transform: scale(0.3); /* change 1.2 to desired scale */
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.toggle-control input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.toggle-control input:checked ~ .control {
+  background-color: rgb(35, 35, 35);
+}
+.toggle-control input:checked ~ .control:after {
+  left: 55px;
+}
+.toggle-control .control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100px;
+  border-radius: 25px;
+  background-color: darkgray;
+  transition: background-color .15s ease-in;
+}
+.toggle-control .control:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 25px;
+  background: white;
+  transition: left .15s ease-in;
+}
+
+/*-------------------------------------------------*/
+
+
+
+/*
+/* Styling for the About section */
+
+#about p{
+    margin-top: 0;        /* keep the subheading snug to the split text */
+}
+.about-titles  {
+        padding-top: 0;
+        color: var(--text);
+        padding-left: 2px; /* nudge the titles away from the page edge */
+}
+
+.split-text-container {
+    padding-top: 50px;
+    display: flex;
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #2b2b2b;
+    overflow: hidden;
+    margin-bottom: 0px;
+    line-height: 1;       /* reduces the vertical space around the split text */
+}
+
+.text-part {
+    color: var(--text);
+    display: inline-block;
+    position: relative;
+    transform: translateX(0);
+    animation-duration: 2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    
+}
+
+.text-part.left {
+    transform: translateX(-200%);
+    animation-name: slide-in-left;
+}
+
+.text-part.right {
+    transform: translateX(200%);
+    animation-name: slide-in-right;
+}
+
+.profile-photo {
+    display: block;
+    margin: 20px auto;
+    border-radius: 50%; /* this makees the image a cricle */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* adds a shadow */
+}
+
+.about-bio {
+    padding-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    max-width: 800px;
+    margin: 20px auto;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--text);
+    text-align: justify;
+    text-justify: inter-word;
+  }
+@keyframes slide-in-left {
+    0% {
+        transform: translateX(-200%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        transform: translateX(200%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+
+
+
+
+  
+}
