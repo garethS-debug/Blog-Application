@@ -1,24 +1,34 @@
-// Import required packages
 const express = require("express");
-const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 
 const sequelize = require("./config/connection");
 const routes = require("./routes");
 
-
-
-// Initialize Express application
 const app = express();
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
-
-const userRoutes = require('./routes/user');
-app.use('/users', userRoutes);
-
 const PORT = process.env.PORT || 3001;
 
-// has the --rebuild parameter been passed as a command line param?
+const corsOptions = {
+  origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.htm"));
+});
+
+app.use(routes);
+
 const rebuild = process.argv[2] === "--rebuild";
 const syncOptions = rebuild
   ? { force: true }
@@ -26,20 +36,6 @@ const syncOptions = rebuild
     ? {}
     : { alter: true };
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, "public")));
-
-// Handle GET request at the root route
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.htm"));
-});
-
-
-
-// Add routes
-app.use(routes);
-
-// Sync database
 sequelize.sync(syncOptions).then(() => {
-  app.listen(PORT, () => console.log("Now listening"));
+  app.listen(PORT, () => console.log(`Now listening on http://localhost:${PORT}`));
 });
