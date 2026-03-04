@@ -671,7 +671,7 @@ body {
   right: 28px;
   width: 280px;
 }
-
+.hidden { display: none !important; }
 
 /* The popup form - hidden by default */
 .form-popup {

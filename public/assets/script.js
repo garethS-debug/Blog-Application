@@ -1,8 +1,53 @@
 let token = localStorage.getItem("authToken");
 
 function openForm() {
-  document.getElementById("myForm").style.display = "block";
-   console.log('Open button clicked');
+  token = localStorage.getItem("authToken");
+  const myForm = document.getElementById("myForm");
+  const authContainer = document.getElementById("auth-container");
+  if (!myForm) return;
+
+  // remove any previous inline messages
+  const oldMsg = document.getElementById("already-logged-in-msg");
+  if (oldMsg) oldMsg.remove();
+
+  // always show the popup frame
+  myForm.style.display = "block";
+
+  if (token) {
+    // hide the login/register UI but keep it intact in DOM
+    if (authContainer) authContainer.classList.add("hidden");
+
+    // create a small inline message with actions
+    const form = myForm.querySelector(".form-container");
+    const msg = document.createElement("div");
+    msg.id = "already-logged-in-msg";
+    msg.innerHTML = `
+      <div>You're already logged in.</div>
+      <div style="margin-top:8px;">
+        <button id="logout-inline" type="button">Logout</button>
+        <button id="close-inline" type="button" style="margin-left:8px">Close</button>
+      </div>`;
+    form.prepend(msg);
+
+    document.getElementById("logout-inline").addEventListener("click", OnClickLogOut);
+    document.getElementById("close-inline").addEventListener("click", OnClickClose);
+  } else {
+    // Not logged in — show the login/register UI
+    if (authContainer) authContainer.classList.remove("hidden");
+  }
+}
+function OnClickLogOut(){
+  logout();
+  const msg = document.getElementById('already-logged-in-msg');
+  if (msg) msg.remove();
+  closeForm();
+}
+
+
+function OnClickClose(){
+      const msg = document.getElementById('already-logged-in-msg');
+      if (msg) msg.remove();
+      closeForm();
 }
 
 function closeForm() {
@@ -76,11 +121,14 @@ function login() {
         localStorage.setItem("authToken", data.token);
         token = data.token;
 
-        alert("User Logged In successfully");
+      //  alert("User Logged In successfully");
 
+
+        console.log("Login successful, token stored in localStorage:", token);
+        createSuccessMessage();
         // Fetch the posts list
         fetchPosts();
-        closeForm();
+       closeForm();
         // Hide the auth container and show the app container as we're now logged in
         document.getElementById("auth-container").classList.add("hidden");
         document.getElementById("app-container").classList.remove("hidden");
@@ -125,6 +173,10 @@ function fetchPosts() {
         postsContainer.appendChild(div);
       });
     });
+}
+
+function createSuccessMessage(){
+
 }
 
 function createPost() {
