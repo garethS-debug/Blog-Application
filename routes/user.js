@@ -5,7 +5,7 @@ const { signToken, authMiddleware } = require("../utils/auth");
 // Get current authenticated user
 router.get("/me", authMiddleware, async (req, res) => {
   try {
-    const user = await User.getOne(req.user.id);
+    const user = await User.findByPk(req.user.id);
     if (!user) return res.status(401).json({ message: "Token expired" });
     return res.status(200).json({ user });
   } catch (err) {
@@ -13,11 +13,24 @@ router.get("/me", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["id", "username", "email", "createdOn"],
+    });
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("GET /users/all error:", err);
+    res.status(500).json({ error: err.message || "Internal Server Error" });
+  }
+});
+
+
 // GET the User record
-router.get("/:id", async (req, res) => {
+router.get("/:id(\\d+)", async (req, res) => {
   console.log("looking for user", req.params.id);
   try {
-    const userData = await User.getOne(req.params.id);
+    const userData = await User.findByPk(req.params.id);
 
     if (!userData) {
       res.status(404).json({ message: "No User found with this id" });
@@ -38,6 +51,9 @@ router.get("/", authMiddleware, async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+
+
 
 router.post("/", async (req, res) => {
   try {

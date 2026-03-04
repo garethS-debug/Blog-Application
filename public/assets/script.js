@@ -1,5 +1,41 @@
 let token = localStorage.getItem("authToken");
 
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+   console.log('Open button clicked');
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+     console.log('Close button clicked');
+}
+
+
+
+function validateForm(event) {
+    if (event && event.preventDefault) { event.preventDefault(); }
+
+    // use the same IDs as in public/assets/script.js
+    const emailInput = document.getElementById('login-email').value;
+    const passwordInput = document.getElementById('login-password').value;
+
+    console.log('Login button clicked');
+    console.log('email input = ', emailInput);
+    console.log('password input = ', passwordInput);
+
+    login();
+    
+}
+
+const loginBtn = document.getElementById('loginBtn');
+if (loginBtn) 
+    {
+    loginBtn.addEventListener('click', validateForm);
+    }
+
+
+
+
 function register() {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
