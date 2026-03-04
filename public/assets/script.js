@@ -10,7 +10,10 @@ function closeForm() {
      console.log('Close button clicked');
 }
 
-
+document.addEventListener('DOMContentLoaded', () => {
+  const myForm = document.getElementById('myForm');
+  if (myForm) closeForm();
+});
 
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }
@@ -77,7 +80,7 @@ function login() {
 
         // Fetch the posts list
         fetchPosts();
-
+        closeForm();
         // Hide the auth container and show the app container as we're now logged in
         document.getElementById("auth-container").classList.add("hidden");
         document.getElementById("app-container").classList.remove("hidden");
