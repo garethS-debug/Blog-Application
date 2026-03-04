@@ -21,10 +21,10 @@ app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname)));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.htm"));
+  res.sendFile(path.join(__dirname, "index.htm"));
 });
 
 app.use(routes);
