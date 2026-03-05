@@ -152,11 +152,12 @@ function logout() {
   }).then(() => {
     localStorage.removeItem("authToken");
     token = null;
+     // document.getElementById("auth-container").classList.remove("hidden");
     document.getElementById("auth-container").classList.remove("hidden");
     document.getElementById("app-container").classList.add("hidden");
     updateAuthButton();
 
-    // document.getElementById("auth-container").classList.remove("hidden");
+   
   });
 }
 
@@ -167,11 +168,12 @@ function showAuthenticatedView() {
   document.getElementById("auth-container").classList.add("hidden");
   document.getElementById("app-container").classList.remove("hidden");
   fetchPosts();
+    // fetchPosts();
+  // document.getElementById("auth-container").classList.remove("hidden");
   console.log('loading user posts');
   closeForm();
 
-  // fetchPosts();
-  // document.getElementById("auth-container").classList.remove("hidden");
+
 }
 
 function updateAuthButton() {
@@ -179,6 +181,17 @@ function updateAuthButton() {
   const btn = document.getElementById("loginBtn");
   if (!btn) return;
   const isAuthed = !!localStorage.getItem("authToken");
+  const oldLogoutBtn = document.getElementById("logoutBtn");
+  if (oldLogoutBtn) {
+    oldLogoutBtn.remove();
+  }
+
+  // const oldLogoutBtn = document.getElementById("logoutBtn");
+  // if (oldLogoutBtn) {
+  //   oldLogoutBtn.style.display = "none";
+  //   oldLogoutBtn.remove();
+  // }
+
   const newBtn = btn.cloneNode(true);
   newBtn.id = "loginBtn";
   newBtn.removeAttribute("onclick");
@@ -187,12 +200,36 @@ function updateAuthButton() {
   btn.parentNode.replaceChild(newBtn, btn);
 
   if (isAuthed) {
+    const logoutBtn = document.createElement("a");
+    logoutBtn.className = "menu";
+    logoutBtn.id = "logoutBtn";
+    logoutBtn.setAttribute("href", "javascript:void(0)");
+    logoutBtn.textContent = "Logout";
+    newBtn.insertAdjacentElement("afterend", logoutBtn);
+
+    console.log('added profile and logout buttons');
+
+    // const logoutBtn = document.createElement("button");
+    // logoutBtn.textContent = "Logout";
+    // logoutBtn.className = "menu";
+    // newBtn.parentNode.appendChild(logoutBtn);
+
     newBtn.addEventListener("click", (e) => {
       console.log('profile clicked');
       e.preventDefault();
       showAuthenticatedView();
 
       // openForm();
+    });
+
+    logoutBtn.addEventListener("click", (e) => {
+      console.log('logout button in nav clicked');
+      e.preventDefault();
+      logout();
+
+      // localStorage.removeItem("authToken");
+      // token = null;
+      // updateAuthButton();
     });
   } else {
     console.log('login mode button');
