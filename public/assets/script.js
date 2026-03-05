@@ -157,24 +157,24 @@ function logout() {
 
 
 function editPost(postID){
+  
 const card = document.querySelector(`[data-post-id="${postID}"]`);   
-const titleEl = card.querySelector("h2");
-const contentEl = card.querySelector("p");
 
-const titleInput = document.createElement("input");
-titleInput.type = "text";
-titleInput.value = titleEl.textContent;
-titleInput.classList.add("edit-title");
+  const titleEl = card.querySelector("h2");
+  const contentEl = card.querySelector("p");
 
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.value = titleEl ? titleEl.textContent : "";
+  titleInput.classList.add("edit-title");
 
-  if (titleEl) {
- card.replaceChild(titleInput, titleEl);
-  }
+  const contentInput = document.createElement("textarea");
+  contentInput.value = contentEl ? contentEl.textContent : "";
+  contentInput.classList.add("edit-content");
 
+  if (titleEl) card.replaceChild(titleInput, titleEl);
+  if (contentEl) card.replaceChild(contentInput, contentEl);
 
-const div = document.createElement("div");
-div.classList.add("card");
-div.setAttribute('data-post-id', post.id);
 
 }
 
@@ -243,6 +243,10 @@ function fetchPosts() {
         delBtn.textContent = "Delete";
         delBtn.addEventListener("click", () => deletePost(post.id));
 
+         div.setAttribute('data-post-id', post.id); //Note to self. This stores the ID in the DIV
+         //Check security of this 
+         
+         
         div.appendChild(delBtn);
 
         // div.innerHTML = `<h3>${post.title}</h3><p>${
