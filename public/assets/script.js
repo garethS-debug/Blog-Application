@@ -175,19 +175,44 @@ const card = document.querySelector(`[data-post-id="${postID}"]`);
   if (titleEl) card.replaceChild(titleInput, titleEl);
   if (contentEl) card.replaceChild(contentInput, contentEl);
 
+         
+        // const submitBtn = document.createElement("button");
+        // submitBtn.textContent = "Submit";
+        // submitBtn.classList.add("submit-btn");
+        // submitBtn.addEventListener("click", () => confirmUpdate(post.id));
+        //div.appendChild(submitBtn);
 
+        
+     const editEl = document.getElementById("edit-btn") || document.querySelector(".edit-btn");
+     editEl.removeEventListener("click", () => editPost(postID));
+     editEl.value = "Submit";
+     editEl.textContent = "Submit";
+     console.log("Edit button changed to submit");
+      editEl.addEventListener("click", () => confirmUpdate(postID));
 }
 
 
 
 function confirmUpdate(postID){
+  
+  console.log("Submit button clicked for post ID:", postID);
+
+  const title = "test title"; // Replace with actual value from input
+  const content = "test content"; // Replace with actual value from textarea
     fetch(`http://localhost:3001/api/posts/${postID}`, {
     method: "PUT",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}` 
+    },    body: JSON.stringify({ title, content })
   }).then((res) => res.json()).then(() => {
     alert("Post updated successfully");
     fetchPosts();
   });
+ 
+
+
+  
 }
 
 function deletePost(postId) {
@@ -236,6 +261,7 @@ function fetchPosts() {
 
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
+        editBtn.classList.add("edit-btn");
         editBtn.addEventListener("click", () => editPost(post.id));
         div.appendChild(editBtn);
 
@@ -243,11 +269,11 @@ function fetchPosts() {
         delBtn.textContent = "Delete";
         delBtn.addEventListener("click", () => deletePost(post.id));
 
+            div.appendChild(delBtn);
          div.setAttribute('data-post-id', post.id); //Note to self. This stores the ID in the DIV
          //Check security of this 
-         
-         
-        div.appendChild(delBtn);
+
+    
 
         // div.innerHTML = `<h3>${post.title}</h3><p>${
         //   post.content
