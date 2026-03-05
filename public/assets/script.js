@@ -156,62 +156,60 @@ function logout() {
 
 
 
-function editPost(postID){
-  
-const card = document.querySelector(`[data-post-id="${postID}"]`);   
+function editPost(postID, button){
+  if (!button) return;
+  const card = button.closest(".card");
+  if (!card) return;
+
+  const isEditing = button.dataset.mode === "editing";
+
+  if (isEditing) {
+    const titleInput = card.querySelector(".edit-title");
+    const contentInput = card.querySelector(".edit-content");
+    if (!titleInput || !contentInput) return;
+
+    confirmUpdate(postID, titleInput.value, contentInput.value);
+    return;
+  }
 
   const titleEl = card.querySelector("h2");
   const contentEl = card.querySelector("p");
+  if (!titleEl || !contentEl) return;
 
   const titleInput = document.createElement("input");
   titleInput.type = "text";
-  titleInput.value = titleEl ? titleEl.textContent : "";
-  titleInput.classList.add("edit-title");
+  titleInput.className = "edit-title";
+  titleInput.value = titleEl.textContent || "";
 
   const contentInput = document.createElement("textarea");
-  contentInput.value = contentEl ? contentEl.textContent : "";
-  contentInput.classList.add("edit-content");
+  contentInput.className = "edit-content";
+  contentInput.value = contentEl.textContent || "";
 
-  if (titleEl) card.replaceChild(titleInput, titleEl);
-  if (contentEl) card.replaceChild(contentInput, contentEl);
+  card.replaceChild(titleInput, titleEl);
+  card.replaceChild(contentInput, contentEl);
 
-         
-        // const submitBtn = document.createElement("button");
-        // submitBtn.textContent = "Submit";
-        // submitBtn.classList.add("submit-btn");
-        // submitBtn.addEventListener("click", () => confirmUpdate(post.id));
-        //div.appendChild(submitBtn);
-
-        
-     const editEl = document.getElementById("edit-btn") || document.querySelector(".edit-btn");
-     editEl.removeEventListener("click", () => editPost(postID));
-     editEl.value = "Submit";
-     editEl.textContent = "Submit";
-     console.log("Edit button changed to submit");
-      editEl.addEventListener("click", () => confirmUpdate(postID, titleInput.value, contentInput.value));
+  button.textContent = "Submit";
+  button.dataset.mode = "editing";
 }
 
 
 
 function confirmUpdate(postID, title, content) {
   
-  console.log("Submit button clicked for post ID:", postID);
-
-  // const title = "test title"; // Replace with actual value from input
-  // const content = "test content"; // Replace with actual value from textarea
-    fetch(`http://localhost:3001/api/posts/${postID}`, {
+  fetch(`http://localhost:3001/api/posts/${postID}`, {
     method: "PUT",
-    headers: { 
+    headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}` 
-    },    body: JSON.stringify({ title, content })
-  }).then((res) => res.json()).then(() => {
-    alert("Post updated successfully");
-    fetchPosts();
-  });
- 
-
-
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ title, content }),
+  })
+    .then((res) => res.json())
+    .then(() => {
+      alert("Post updated successfully");
+      fetchPosts();
+    })
+    .catch((err) => console.log(err));
   
 }
 
@@ -227,7 +225,7 @@ function deletePost(postId) {
 }
 
 function fetchPosts() {
-  fetch("http://localhost:3001/api/posts", {
+ fetch("http://localhost:3001/api/posts", {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -235,57 +233,49 @@ function fetchPosts() {
     .then((posts) => {
       const postsContainer = document.getElementById("posts");
       postsContainer.innerHTML = "";
-      posts.forEach((post) => 
-        {
+
+      posts.forEach((post) => {
         const div = document.createElement("div");
         div.classList.add("card");
+        div.setAttribute("data-post-id", post.id);
+
         const h2 = document.createElement("h2");
         h2.textContent = post.title;
 
         const h5 = document.createElement("h5");
         h5.textContent = `Title description, ${new Date(post.createdOn).toLocaleDateString()}`;
-        
+
         const fakeimg = document.createElement("div");
         fakeimg.classList.add("fakeimg");
         fakeimg.style.height = "100px";
         fakeimg.textContent = "Image";
-        div.appendChild(fakeimg);
 
-        
-        
         const p = document.createElement("p");
         p.textContent = post.content;
-        div.appendChild(h2);
-        div.appendChild(h5);
-        div.appendChild(p);
 
         const editBtn = document.createElement("button");
+        editBtn.type = "button";
         editBtn.textContent = "Edit";
         editBtn.classList.add("edit-btn");
-        editBtn.addEventListener("click", () => editPost(post.id));
-        div.appendChild(editBtn);
+        editBtn.dataset.mode = "view";
+        editBtn.onclick = () => editPost(post.id, editBtn);
 
         const delBtn = document.createElement("button");
+        delBtn.type = "button";
         delBtn.textContent = "Delete";
         delBtn.addEventListener("click", () => deletePost(post.id));
 
-            div.appendChild(delBtn);
-         div.setAttribute('data-post-id', post.id); //Note to self. This stores the ID in the DIV
-         //Check security of this 
-
-    
-
-        // div.innerHTML = `<h3>${post.title}</h3><p>${
-        //   post.content
-        // }</p><small>By: ${post.postedBy} on ${new Date(
-        //   post.createdOn
-        // ).toLocaleString()}</small>`;
-
-        
+        div.appendChild(fakeimg);
+        div.appendChild(h2);
+        div.appendChild(h5);
+        div.appendChild(p);
+        div.appendChild(editBtn);
+        div.appendChild(delBtn);
 
         postsContainer.appendChild(div);
       });
-    });
+    })
+    .catch((err) => console.log(err));
 }
 
 
