@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const myForm = document.getElementById('myForm');
   if (myForm) closeForm();
   console.log('page loaded');
+  fetchPosts();
   updateAuthButton();
   if (localStorage.getItem('authToken')) {
     showAuthenticatedView();
@@ -156,6 +157,7 @@ function logout() {
     document.getElementById("auth-container").classList.remove("hidden");
     document.getElementById("app-container").classList.add("hidden");
     updateAuthButton();
+    fetchPosts();
 
    
   });
@@ -323,11 +325,13 @@ function fetchPosts() {
     .then((res) => res.json())
     .then((posts) => {
       console.log('fetching posts now');
-      const postsContainer = document.querySelector("#app-container #posts");
+      const postsContainer = document.getElementById("posts");
+      if (!postsContainer) return;
       postsContainer.innerHTML = "";
+      const isAuthed = !!localStorage.getItem("authToken");
 
       // const postsContainer = document.getElementById("posts");
-
+      console.log('posts fetched:', posts);
       posts.forEach((post) => {
         const div = document.createElement("div");
         div.classList.add("card");
@@ -347,24 +351,26 @@ function fetchPosts() {
         const p = document.createElement("p");
         p.textContent = post.content;
 
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.textContent = "Edit";
-        editBtn.classList.add("edit-btn");
-        editBtn.dataset.mode = "view";
-        editBtn.onclick = () => editPost(post.id, editBtn);
-
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.textContent = "Delete";
-        delBtn.addEventListener("click", () => deletePost(post.id));
-
         div.appendChild(fakeimg);
         div.appendChild(h2);
         div.appendChild(h5);
         div.appendChild(p);
-        div.appendChild(editBtn);
-        div.appendChild(delBtn);
+        if (isAuthed) {
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.textContent = "Edit";
+          editBtn.classList.add("edit-btn");
+          editBtn.dataset.mode = "view";
+          editBtn.onclick = () => editPost(post.id, editBtn);
+
+          const delBtn = document.createElement("button");
+          delBtn.type = "button";
+          delBtn.textContent = "Delete";
+          delBtn.addEventListener("click", () => deletePost(post.id));
+
+          div.appendChild(editBtn);
+          div.appendChild(delBtn);
+        }
 
         postsContainer.appendChild(div);
       });
