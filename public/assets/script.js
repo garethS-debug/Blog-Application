@@ -1,5 +1,5 @@
 let token = localStorage.getItem("authToken");
-let profileMode = false; // when true, show editable profile UI (create/edit/delete)
+let profileMode = false; 
 
 function openForm() {
   token = localStorage.getItem("authToken");
@@ -81,14 +81,14 @@ function fetchCategories() {
         opt.textContent = c.category_name || c.categoryName || c.name || `Category ${c.id}`;
         select.appendChild(opt);
       });
-      // populate dropdown menu for filtering posts
+
       const dropdown = document.getElementById('myDropdown');
       if (dropdown) {
-        // remove existing category links except the search input
+
         const existing = Array.from(dropdown.querySelectorAll('a[data-cat-id]'));
         existing.forEach((el) => el.remove());
 
-        // Add an "All" option
+
         const allLink = document.createElement('a');
         allLink.href = 'javascript:void(0)';
         allLink.textContent = 'All';
@@ -109,13 +109,13 @@ function fetchCategories() {
     .catch((err) => console.log('Error fetching categories', err));
 }
 
-// Toggle dropdown visibility
+
 function myFunction() {
   const dropdown = document.getElementById('myDropdown');
   if (dropdown) dropdown.classList.toggle('show');
 }
 
-// Filter dropdown links by search input
+
 function filterFunction() {
   const input = document.getElementById('myInput');
   const filter = (input && input.value || '').toUpperCase();
@@ -128,7 +128,7 @@ function filterFunction() {
   }
 }
 
-// Close the dropdown if the user clicks outside of it
+
 window.addEventListener('click', function (e) {
   const dropdown = document.getElementById('myDropdown');
   const btn = e.target && e.target.classList && e.target.classList.contains('dropbtn');
@@ -465,7 +465,6 @@ function createSuccessMessage(){
 function createPost() {
   const title = document.getElementById("post-title").value;
   const content = document.getElementById("post-content").value;
-  // replace this with the actual category id (number) from your UI, e.g. a select value
   const categoryId = Number(document.getElementById("post-category")?.value) || 1;
 
   const body = { title, content, categoryId, postedBy: "User" };
