@@ -188,17 +188,17 @@ const card = document.querySelector(`[data-post-id="${postID}"]`);
      editEl.value = "Submit";
      editEl.textContent = "Submit";
      console.log("Edit button changed to submit");
-      editEl.addEventListener("click", () => confirmUpdate(postID));
+      editEl.addEventListener("click", () => confirmUpdate(postID, titleInput.value, contentInput.value));
 }
 
 
 
-function confirmUpdate(postID){
+function confirmUpdate(postID, title, content) {
   
   console.log("Submit button clicked for post ID:", postID);
 
-  const title = "test title"; // Replace with actual value from input
-  const content = "test content"; // Replace with actual value from textarea
+  // const title = "test title"; // Replace with actual value from input
+  // const content = "test content"; // Replace with actual value from textarea
     fetch(`http://localhost:3001/api/posts/${postID}`, {
     method: "PUT",
     headers: { 
