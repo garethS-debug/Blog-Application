@@ -12,16 +12,52 @@ async function fetchPosts() {
         console.log("Error fetching posts:", err);
     }
 }
+document.getElementById('category-filter').addEventListener('change', (e) => {
+    changedCategory(e.target.value);
+});
+
+function changedCategory(category) {
+  console.log('category selected', category);
+}
+
+function setupCategoryListener() {
+  document.getElementById('category-filter').addEventListener('change', function(e){
+    changedCategory(e.target.value);
+  });
+}
+
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
 
 function renderPosts(posts = []) {
     const container = document.getElementById("posts");
+    const row = document.createElement("div");
+    const left = document.createElement("div");
+    
+    left.className = "leftcolumn";
+    row.className = "row";
     container.innerHTML = "";
 
-    const row = document.createElement("div");
-    row.className = "row";
-
-    const left = document.createElement("div");
-    left.className = "leftcolumn";
 
     posts.forEach(post => {
         const card = document.createElement("div");
@@ -54,7 +90,25 @@ function renderPosts(posts = []) {
     container.appendChild(row);
 }
 
-// auto-load posts on page load
-window.addEventListener("DOMContentLoaded", fetchPosts);
+function listenForCatSelection() {
+  const dropdown = document.getElementById("myDropdown");
+  const links = dropdown.getElementsByTagName("a");
+  for (let i = 0; i < links.length; i++) {
+    links[i].addEventListener("click", function() {
+      console.log(this.textContent);
+    });
+  }
+}
 
-// ...existing code...
+const catFilter = document.getElementById('category-filter');
+if (catFilter) catFilter.addEventListener('change', (e) => {
+  changedCategory(e.target.value);
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+ // setupCategoryListener();
+//  dropdownSelection();
+  listenForCatSelection();
+  fetchPosts();
+});
+

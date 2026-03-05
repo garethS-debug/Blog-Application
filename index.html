@@ -99,11 +99,21 @@
     </div>
 
   <div class="container" id="posts-container">
-<label for="category-filter">Filter by category:</label>
-<select id="category-filter">
-  <option value="">All Categories</option>
-  <option value="">Recent</option>
-</select>
+
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    <a href="#about">About</a>
+    <a href="#base">Base</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+    <a href="#custom">Custom</a>
+    <a href="#support">Support</a>
+    <a href="#tools">Tools</a>
+  </div>
+</div>
 
 
     <div id="posts"></div>
