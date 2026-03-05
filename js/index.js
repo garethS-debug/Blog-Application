@@ -14,7 +14,26 @@ async function fetchPosts() {
 }
 
 function renderPosts(posts = []) {
-  console.log("Rendering posts:", posts);
+    const container = document.getElementById("posts");
+    container.innerHTML = "";
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const left = document.createElement("div");
+    left.className = "leftcolumn";
+
+    posts.forEach(post => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+   
+
+        left.appendChild(card);
+    });
+
+    row.appendChild(left);
+    container.appendChild(row);
 }
 
 // auto-load posts on page load
