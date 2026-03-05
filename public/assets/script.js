@@ -154,6 +154,20 @@ function logout() {
   });
 }
 
+function editPost(postID){
+
+}
+
+function confirmUpdate(postID){
+    fetch(`http://localhost:3001/api/posts/${postID}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json()).then(() => {
+    alert("Post updated successfully");
+    fetchPosts();
+  });
+}
+
 function deletePost(postId) {
   fetch(`http://localhost:3001/api/posts/${postId}`, {
     method: "DELETE",
@@ -198,6 +212,10 @@ function fetchPosts() {
         div.appendChild(h5);
         div.appendChild(p);
 
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => editPost(post.id));
+        div.appendChild(editBtn);
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "Delete";
@@ -217,6 +235,8 @@ function fetchPosts() {
       });
     });
 }
+
+
 
 function createSuccessMessage(){
 
