@@ -6,18 +6,16 @@ function openForm() {
   const authContainer = document.getElementById("auth-container");
   if (!myForm) return;
 
-  // remove any previous inline messages
   const oldMsg = document.getElementById("already-logged-in-msg");
   if (oldMsg) oldMsg.remove();
 
-  // always show the popup frame
+
   myForm.style.display = "block";
 
   if (token) {
-    // hide the login/register UI but keep it intact in DOM
+
     if (authContainer) authContainer.classList.add("hidden");
 
-    // create a small inline message with actions
     const form = myForm.querySelector(".form-container");
     const msg = document.createElement("div");
     msg.id = "already-logged-in-msg";
@@ -32,7 +30,6 @@ function openForm() {
     document.getElementById("logout-inline").addEventListener("click", OnClickLogOut);
     document.getElementById("close-inline").addEventListener("click", OnClickClose);
   } else {
-    // Not logged in — show the login/register UI
     if (authContainer) authContainer.classList.remove("hidden");
   }
 }
@@ -58,12 +55,15 @@ function closeForm() {
 document.addEventListener('DOMContentLoaded', () => {
   const myForm = document.getElementById('myForm');
   if (myForm) closeForm();
+  console.log('page loaded');
+  updateAuthButton();
+  if (localStorage.getItem('authToken')) {
+    showAuthenticatedView();
+  }
 });
 
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }
-
-    // use the same IDs as in public/assets/script.js
     const emailInput = document.getElementById('login-email').value;
     const passwordInput = document.getElementById('login-password').value;
 
@@ -109,6 +109,7 @@ function register() {
 function login() {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
+  console.log('trying login');
   fetch("http://localhost:3001/api/users/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -116,7 +117,6 @@ function login() {
   })
     .then((res) => res.json())
     .then((data) => {
-      // Save the token in the local storage
       if (data.token) {
         localStorage.setItem("authToken", data.token);
         token = data.token;
@@ -126,12 +126,15 @@ function login() {
 
         console.log("Login successful, token stored in localStorage:", token);
         createSuccessMessage();
-        // Fetch the posts list
+
         fetchPosts();
        closeForm();
-        // Hide the auth container and show the app container as we're now logged in
         document.getElementById("auth-container").classList.add("hidden");
         document.getElementById("app-container").classList.remove("hidden");
+        updateAuthButton();
+
+        // fetchPosts();
+        // closeForm();
       } else {
         alert(data.message);
       }
@@ -142,16 +145,53 @@ function login() {
 }
 
 function logout() {
+  console.log('logout clicked');
   fetch("http://localhost:3001/api/users/logout", {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
   }).then(() => {
-    // Clear the token from the local storage as we're now logged out
     localStorage.removeItem("authToken");
     token = null;
     document.getElementById("auth-container").classList.remove("hidden");
     document.getElementById("app-container").classList.add("hidden");
+    updateAuthButton();
+
+    // document.getElementById("auth-container").classList.remove("hidden");
   });
+}
+
+function showAuthenticatedView() {
+  console.log('open profile view');
+  token = localStorage.getItem('authToken');
+  document.getElementById("auth-container").classList.add("hidden");
+  document.getElementById("app-container").classList.remove("hidden");
+  fetchPosts();
+  closeForm();
+
+  // fetchPosts();
+}
+
+function updateAuthButton() {
+  console.log('updating auth button');
+  const btn = document.getElementById("loginBtn");
+  const isAuthed = !!localStorage.getItem("authToken");
+  const newBtn = btn.cloneNode(true);
+  newBtn.id = "loginBtn";
+  newBtn.textContent = isAuthed ? "Profile" : "Login";
+  btn.parentNode.replaceChild(newBtn, btn);
+
+  if (isAuthed) {
+    newBtn.addEventListener("click", (e) => {
+      console.log('profile clicked');
+      e.preventDefault();
+      showAuthenticatedView();
+    });
+  } else {
+    console.log('login mode button');
+    newBtn.addEventListener("click", validateForm);
+
+    // newBtn.addEventListener("click", validateForm);
+  }
 }
 
 
