@@ -36,7 +36,16 @@ function renderPosts(posts = []) {
         meta.textContent = `${post.summary || ""}${date ? ", " + date : ""}`;
         card.appendChild(meta);
 
+        const imgDiv = document.createElement("div");
+        imgDiv.className = "fakeimg";
+        imgDiv.style.height = "200px";
+        imgDiv.textContent = "Image";
+        card.appendChild(imgDiv);
 
+        const content = document.createElement("p");
+        const text = post.content || "";
+        content.textContent = text.length > 300 ? text.slice(0, 300) + "..." : text;
+        card.appendChild(content);
 
         left.appendChild(card);
     });
