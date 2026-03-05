@@ -154,6 +154,16 @@ function logout() {
   });
 }
 
+function deletePost(postId) {
+  fetch(`http://localhost:3001/api/posts/${postId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => 
+    res.json()).then(() => {
+      alert("Post deleted successfully");
+      fetchPosts();
+    });
+}
 
 function fetchPosts() {
   fetch("http://localhost:3001/api/posts", {
@@ -187,6 +197,13 @@ function fetchPosts() {
         div.appendChild(h2);
         div.appendChild(h5);
         div.appendChild(p);
+
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.addEventListener("click", () => deletePost(post.id));
+
+        div.appendChild(delBtn);
 
         // div.innerHTML = `<h3>${post.title}</h3><p>${
         //   post.content
