@@ -154,6 +154,7 @@ function logout() {
   });
 }
 
+
 function fetchPosts() {
   fetch("http://localhost:3001/api/posts", {
     method: "GET",
@@ -163,13 +164,38 @@ function fetchPosts() {
     .then((posts) => {
       const postsContainer = document.getElementById("posts");
       postsContainer.innerHTML = "";
-      posts.forEach((post) => {
+      posts.forEach((post) => 
+        {
         const div = document.createElement("div");
-        div.innerHTML = `<h3>${post.title}</h3><p>${
-          post.content
-        }</p><small>By: ${post.postedBy} on ${new Date(
-          post.createdOn
-        ).toLocaleString()}</small>`;
+        div.classList.add("card");
+        const h2 = document.createElement("h2");
+        h2.textContent = post.title;
+
+        const h5 = document.createElement("h5");
+        h5.textContent = `Title description, ${new Date(post.createdOn).toLocaleDateString()}`;
+        
+        const fakeimg = document.createElement("div");
+        fakeimg.classList.add("fakeimg");
+        fakeimg.style.height = "100px";
+        fakeimg.textContent = "Image";
+        div.appendChild(fakeimg);
+
+        
+        
+        const p = document.createElement("p");
+        p.textContent = post.content;
+        div.appendChild(h2);
+        div.appendChild(h5);
+        div.appendChild(p);
+
+        // div.innerHTML = `<h3>${post.title}</h3><p>${
+        //   post.content
+        // }</p><small>By: ${post.postedBy} on ${new Date(
+        //   post.createdOn
+        // ).toLocaleString()}</small>`;
+
+        
+
         postsContainer.appendChild(div);
       });
     });

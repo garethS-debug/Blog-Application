@@ -1,1 +1,3 @@
 blog\Scripts\activate
+
+$env:NODE_ENV='production'; npm start
