@@ -78,7 +78,7 @@ function validateForm(event) {
 const loginBtn = document.getElementById('loginBtn');
 if (loginBtn) 
     {
-    loginBtn.addEventListener('click', validateForm);
+  loginBtn.addEventListener('click', openForm);
     }
 
 
@@ -163,20 +163,26 @@ function logout() {
 function showAuthenticatedView() {
   console.log('open profile view');
   token = localStorage.getItem('authToken');
+  console.log('token in profile view', token);
   document.getElementById("auth-container").classList.add("hidden");
   document.getElementById("app-container").classList.remove("hidden");
   fetchPosts();
+  console.log('loading user posts');
   closeForm();
 
   // fetchPosts();
+  // document.getElementById("auth-container").classList.remove("hidden");
 }
 
 function updateAuthButton() {
   console.log('updating auth button');
   const btn = document.getElementById("loginBtn");
+  if (!btn) return;
   const isAuthed = !!localStorage.getItem("authToken");
   const newBtn = btn.cloneNode(true);
   newBtn.id = "loginBtn";
+  newBtn.removeAttribute("onclick");
+  newBtn.setAttribute("href", "javascript:void(0)");
   newBtn.textContent = isAuthed ? "Profile" : "Login";
   btn.parentNode.replaceChild(newBtn, btn);
 
@@ -185,12 +191,20 @@ function updateAuthButton() {
       console.log('profile clicked');
       e.preventDefault();
       showAuthenticatedView();
+
+      // openForm();
     });
   } else {
     console.log('login mode button');
-    newBtn.addEventListener("click", validateForm);
+    newBtn.addEventListener("click", (e) => {
+      console.log('login clicked from nav');
+      e.preventDefault();
+      openForm();
 
-    // newBtn.addEventListener("click", validateForm);
+      // showAuthenticatedView();
+    });
+
+    // newBtn.addEventListener("click", openForm);
   }
 }
 
@@ -271,8 +285,11 @@ function fetchPosts() {
   })
     .then((res) => res.json())
     .then((posts) => {
-      const postsContainer = document.getElementById("posts");
+      console.log('fetching posts now');
+      const postsContainer = document.querySelector("#app-container #posts");
       postsContainer.innerHTML = "";
+
+      // const postsContainer = document.getElementById("posts");
 
       posts.forEach((post) => {
         const div = document.createElement("div");
