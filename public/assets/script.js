@@ -1,4 +1,5 @@
 let token = localStorage.getItem("authToken");
+let profileMode = false; // when true, show editable profile UI (create/edit/delete)
 
 function openForm() {
   token = localStorage.getItem("authToken");
@@ -193,7 +194,7 @@ function login() {
     .then((data) => {
       if (data.token) {
         localStorage.setItem("authToken", data.token);
-        token = data.token;
+          token = data.token;
 
       //  alert("User Logged In successfully");
 
@@ -201,10 +202,8 @@ function login() {
         console.log("Login successful, token stored in localStorage:", token);
         createSuccessMessage();
 
-        fetchPosts();
-       closeForm();
-        document.getElementById("auth-container").classList.add("hidden");
-        document.getElementById("app-container").classList.remove("hidden");
+        // show profile view after login
+        showProfileView();
         updateAuthButton();
 
         // fetchPosts();
@@ -241,7 +240,7 @@ function showAuthenticatedView() {
   token = localStorage.getItem('authToken');
   console.log('token in profile view', token);
   document.getElementById("auth-container").classList.add("hidden");
-  document.getElementById("app-container").classList.remove("hidden");
+  profileMode = false;
   fetchPosts();
     // fetchPosts();
   // document.getElementById("auth-container").classList.remove("hidden");
@@ -292,7 +291,7 @@ function updateAuthButton() {
     newBtn.addEventListener("click", (e) => {
       console.log('profile clicked');
       e.preventDefault();
-      showAuthenticatedView();
+      showProfileView();
 
       // openForm();
     });
@@ -433,22 +432,23 @@ function fetchPosts(filterCategoryId) {
         div.appendChild(h2);
         div.appendChild(h5);
         div.appendChild(p);
-        if (isAuthed) {
-          const editBtn = document.createElement("button");
-          editBtn.type = "button";
-          editBtn.textContent = "Edit";
-          editBtn.classList.add("edit-btn");
-          editBtn.dataset.mode = "view";
-          editBtn.onclick = () => editPost(post.id, editBtn);
+              // render edit/delete buttons when in profile mode
+              if (profileMode) {
+                const editBtn = document.createElement("button");
+                editBtn.type = "button";
+                editBtn.textContent = "Edit";
+                editBtn.classList.add("edit-btn");
+                editBtn.dataset.mode = "view";
+                editBtn.onclick = () => editPost(post.id, editBtn);
 
-          const delBtn = document.createElement("button");
-          delBtn.type = "button";
-          delBtn.textContent = "Delete";
-          delBtn.addEventListener("click", () => deletePost(post.id));
+                const delBtn = document.createElement("button");
+                delBtn.type = "button";
+                delBtn.textContent = "Delete";
+                delBtn.addEventListener("click", () => deletePost(post.id));
 
-          div.appendChild(editBtn);
-          div.appendChild(delBtn);
-        }
+                div.appendChild(editBtn);
+                div.appendChild(delBtn);
+              }
 
         postsContainer.appendChild(div);
       });
@@ -486,4 +486,15 @@ function createPost() {
       fetchPosts();
     })
     .catch((err) => console.log(err));
+}
+
+function showProfileView() {
+  token = localStorage.getItem('authToken');
+  profileMode = true;
+  document.getElementById("auth-container").classList.add("hidden");
+  const app = document.getElementById("app-container");
+  if (app) app.classList.remove("hidden");
+  fetchCategories();
+  fetchPosts();
+  closeForm();
 }
