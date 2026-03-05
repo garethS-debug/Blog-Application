@@ -80,9 +80,61 @@ function fetchCategories() {
         opt.textContent = c.category_name || c.categoryName || c.name || `Category ${c.id}`;
         select.appendChild(opt);
       });
+      // populate dropdown menu for filtering posts
+      const dropdown = document.getElementById('myDropdown');
+      if (dropdown) {
+        // remove existing category links except the search input
+        const existing = Array.from(dropdown.querySelectorAll('a[data-cat-id]'));
+        existing.forEach((el) => el.remove());
+
+        // Add an "All" option
+        const allLink = document.createElement('a');
+        allLink.href = 'javascript:void(0)';
+        allLink.textContent = 'All';
+        allLink.dataset.catId = '';
+        allLink.addEventListener('click', () => { fetchPosts(); myFunction(); });
+        dropdown.appendChild(allLink);
+
+        categories.forEach((c) => {
+          const a = document.createElement('a');
+          a.href = 'javascript:void(0)';
+          a.textContent = c.category_name || c.categoryName || c.name || `Category ${c.id}`;
+          a.dataset.catId = c.id;
+          a.addEventListener('click', () => { fetchPosts(c.id); myFunction(); });
+          dropdown.appendChild(a);
+        });
+      }
     })
     .catch((err) => console.log('Error fetching categories', err));
 }
+
+// Toggle dropdown visibility
+function myFunction() {
+  const dropdown = document.getElementById('myDropdown');
+  if (dropdown) dropdown.classList.toggle('show');
+}
+
+// Filter dropdown links by search input
+function filterFunction() {
+  const input = document.getElementById('myInput');
+  const filter = (input && input.value || '').toUpperCase();
+  const dropdown = document.getElementById('myDropdown');
+  if (!dropdown) return;
+  const links = dropdown.getElementsByTagName('a');
+  for (let i = 0; i < links.length; i++) {
+    const txtValue = links[i].textContent || links[i].innerText;
+    links[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+  }
+}
+
+// Close the dropdown if the user clicks outside of it
+window.addEventListener('click', function (e) {
+  const dropdown = document.getElementById('myDropdown');
+  const btn = e.target && e.target.classList && e.target.classList.contains('dropbtn');
+  if (!btn && dropdown && dropdown.classList.contains('show')) {
+    dropdown.classList.remove('show');
+  }
+});
 
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }
@@ -338,7 +390,7 @@ function deletePost(postId) {
     });
 }
 
-function fetchPosts() {
+function fetchPosts(filterCategoryId) {
  fetch("http://localhost:3001/api/posts", {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
@@ -352,7 +404,11 @@ function fetchPosts() {
       postsContainer.innerHTML = "";
       const isAuthed = !!localStorage.getItem("authToken");
 
-      // const postsContainer = document.getElementById("posts");
+      // client-side filter by category id when requested
+      if (filterCategoryId) {
+        posts = posts.filter(p => Number(p.categoryId) === Number(filterCategoryId));
+      }
+
       console.log('posts fetched:', posts);
       posts.forEach((post) => {
         const div = document.createElement("div");
