@@ -12,10 +12,6 @@ async function fetchPosts() {
         console.log("Error fetching posts:", err);
     }
 }
-document.getElementById('category-filter').addEventListener('change', (e) => {
-    changedCategory(e.target.value);
-});
-
 function changedCategory(category) {
   console.log('category selected', category);
 }
@@ -95,7 +91,7 @@ function listenForCatSelection() {
   const links = dropdown.getElementsByTagName("a");
   for (let i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function() {
-      console.log(this.textContent);
+    console.log(this.textContent.trim());
     });
   }
 }
