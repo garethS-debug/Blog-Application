@@ -27,7 +27,16 @@ function renderPosts(posts = []) {
         const card = document.createElement("div");
         card.className = "card";
 
-   
+        const title = document.createElement("h2");
+        title.textContent = post.title || "Default Title - No Title Provided";
+        card.appendChild(title);
+
+        const meta = document.createElement("h5");
+        const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "";
+        meta.textContent = `${post.summary || ""}${date ? ", " + date : ""}`;
+        card.appendChild(meta);
+
+
 
         left.appendChild(card);
     });
