@@ -57,11 +57,32 @@ document.addEventListener('DOMContentLoaded', () => {
   if (myForm) closeForm();
   console.log('page loaded');
   fetchPosts();
+  fetchCategories();
   updateAuthButton();
   if (localStorage.getItem('authToken')) {
     showAuthenticatedView();
   }
 });
+
+function fetchCategories() {
+  fetch('http://localhost:3001/api/categories', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then((res) => res.json())
+    .then((categories) => {
+      const select = document.getElementById('post-category');
+      if (!select) return;
+      select.innerHTML = '';
+      categories.forEach((c) => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.category_name || c.categoryName || c.name || `Category ${c.id}`;
+        select.appendChild(opt);
+      });
+    })
+    .catch((err) => console.log('Error fetching categories', err));
+}
 
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }

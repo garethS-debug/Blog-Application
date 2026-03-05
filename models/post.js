@@ -14,6 +14,22 @@ Post.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "category",
+        key: "id",
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "user",
+        key: "id",
+      },
+    },
     postedBy: {
       type: DataTypes.TEXT,
       allowNull: false,
