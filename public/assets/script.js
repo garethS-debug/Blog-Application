@@ -325,6 +325,7 @@ function fetchPosts() {
     .then((res) => res.json())
     .then((posts) => {
       console.log('fetching posts now');
+      console.log('posts fetched raw:', JSON.stringify(posts, null, 2)); 
       const postsContainer = document.getElementById("posts");
       if (!postsContainer) return;
       postsContainer.innerHTML = "";
@@ -387,17 +388,25 @@ function createSuccessMessage(){
 function createPost() {
   const title = document.getElementById("post-title").value;
   const content = document.getElementById("post-content").value;
+  // replace this with the actual category id (number) from your UI, e.g. a select value
+  const categoryId = Number(document.getElementById("post-category")?.value) || 1;
+
+  const body = { title, content, categoryId, postedBy: "User" };
+  console.log('creating post payload:', body);
+
   fetch("http://localhost:3001/api/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ title, content, postedBy: "User" }),
+    body: JSON.stringify(body),
   })
     .then((res) => res.json())
-    .then(() => {
+    .then((data) => {
+      console.log('create post response:', data);
       alert("Post created successfully");
       fetchPosts();
-    });
+    })
+    .catch((err) => console.log(err));
 }
