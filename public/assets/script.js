@@ -1,7 +1,8 @@
 let token = localStorage.getItem("authToken");
 let profileMode = false; 
-const API_BASE = "http://localhost:3001"; 
-
+window.API_BASE = window.API_BASE || "https://blog-application-k261.onrender.com";
+var API_BASE = window.API_BASE;
+//
 function openForm() {
   token = localStorage.getItem("authToken");
   const myForm = document.getElementById("myForm");

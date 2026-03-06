@@ -1,5 +1,6 @@
 
-const API_BASE = "https://blog-application-k261.onrender.com";
+window.API_BASE = window.API_BASE || "https://blog-application-k261.onrender.com";
+var API_BASE = window.API_BASE;
 
 function openForm() {
   document.getElementById("myForm").style.display = "block";
@@ -10,7 +11,7 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
      console.log('Close button clicked');
 }
-
+//
 
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }

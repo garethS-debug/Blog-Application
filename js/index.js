@@ -1,6 +1,7 @@
-// ...existing code...
 
-const API_BASE = "https://blog-application-k261.onrender.com";
+
+window.API_BASE = window.API_BASE || "https://blog-application-k261.onrender.com";
+var API_BASE = window.API_BASE;
 const API_URL = `${API_BASE}/api/posts`;
 
 async function fetchPosts() {
@@ -23,9 +24,7 @@ function setupCategoryListener() {
   });
 }
 
-
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
+//
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
