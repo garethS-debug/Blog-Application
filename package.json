@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "node server.js",
     "seed": "node seeds/seed.js",
-    "rebuild": "nodemon server.js --rebuild"
+    "rebuild": "node server.js --rebuild"
   },
   "keywords": [],
   "author": "",
