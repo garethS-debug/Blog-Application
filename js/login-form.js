@@ -1,4 +1,6 @@
 
+const API_BASE = "https://blog-application-k261.onrender.com";
+
 function openForm() {
   document.getElementById("myForm").style.display = "block";
    console.log('Open button clicked');
@@ -13,7 +15,6 @@ function closeForm() {
 function validateForm(event) {
     if (event && event.preventDefault) { event.preventDefault(); }
 
-    // use the same IDs as in public/assets/script.js
     const emailInput = document.getElementById('login-email').value;
     const passwordInput = document.getElementById('login-password').value;
 
@@ -37,15 +38,13 @@ if (loginBtn)
 
 
 
-//  adding content from script.js 
-
 let token = localStorage.getItem("authToken");
 
 function register() {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  fetch("http://localhost:3001/api/users", {
+  fetch(`${API_BASE}/api/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }),
@@ -66,7 +65,7 @@ function register() {
 function login() {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-  fetch("http://localhost:3001/api/users/login", {
+  fetch(`${API_BASE}/api/users/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -80,10 +79,10 @@ function login() {
 
         alert("User Logged In successfully");
 
-        // Fetch the posts list
+
         fetchPosts();
 
-        // Hide the auth container and show the app container as we're now logged in
+
         document.getElementById("auth-container").classList.add("hidden");
         document.getElementById("app-container").classList.remove("hidden");
       } else {
@@ -96,11 +95,11 @@ function login() {
 }
 
 function logout() {
-  fetch("http://localhost:3001/api/users/logout", {
+  fetch(`${API_BASE}/api/users/logout`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
   }).then(() => {
-    // Clear the token from the local storage as we're now logged out
+
     localStorage.removeItem("authToken");
     token = null;
     document.getElementById("auth-container").classList.remove("hidden");
@@ -109,7 +108,7 @@ function logout() {
 }
 
 function fetchPosts() {
-  fetch("http://localhost:3001/api/posts", {
+  fetch(`${API_BASE}/api/posts`, {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -132,7 +131,7 @@ function fetchPosts() {
 function createPost() {
   const title = document.getElementById("post-title").value;
   const content = document.getElementById("post-content").value;
-  fetch("http://localhost:3001/api/posts", {
+  fetch(`${API_BASE}/api/posts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

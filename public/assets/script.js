@@ -1,5 +1,6 @@
 let token = localStorage.getItem("authToken");
 let profileMode = false; 
+const API_BASE = "http://localhost:3001"; 
 
 function openForm() {
   token = localStorage.getItem("authToken");
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function fetchCategories() {
-  fetch('http://localhost:3001/api/categories', {
+  fetch(`${API_BASE}/api/categories`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -163,7 +164,7 @@ function register() {
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  fetch("http://localhost:3001/api/users", {
+  fetch(`${API_BASE}/api/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }),
@@ -185,7 +186,7 @@ function login() {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
   console.log('trying login');
-  fetch("http://localhost:3001/api/users/login", {
+  fetch(`${API_BASE}/api/users/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -219,7 +220,7 @@ function login() {
 
 function logout() {
   console.log('logout clicked');
-  fetch("http://localhost:3001/api/users/logout", {
+  fetch(`${API_BASE}/api/users/logout`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
   }).then(() => {
@@ -361,7 +362,7 @@ function editPost(postID, button){
 
 function confirmUpdate(postID, title, content) {
   
-  fetch(`http://localhost:3001/api/posts/${postID}`, {
+  fetch(`${API_BASE}/api/posts/${postID}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -379,7 +380,7 @@ function confirmUpdate(postID, title, content) {
 }
 
 function deletePost(postId) {
-  fetch(`http://localhost:3001/api/posts/${postId}`, {
+  fetch(`${API_BASE}/api/posts/${postId}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => 
@@ -390,7 +391,7 @@ function deletePost(postId) {
 }
 
 function fetchPosts(filterCategoryId) {
- fetch("http://localhost:3001/api/posts", {
+ fetch(`${API_BASE}/api/posts`, {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -403,7 +404,6 @@ function fetchPosts(filterCategoryId) {
       postsContainer.innerHTML = "";
       const isAuthed = !!localStorage.getItem("authToken");
 
-      // client-side filter by category id when requested
       if (filterCategoryId) {
         posts = posts.filter(p => Number(p.categoryId) === Number(filterCategoryId));
       }
@@ -432,7 +432,7 @@ function fetchPosts(filterCategoryId) {
         div.appendChild(h2);
         div.appendChild(h5);
         div.appendChild(p);
-              // render edit/delete buttons when in profile mode
+
               if (profileMode) {
                 const editBtn = document.createElement("button");
                 editBtn.type = "button";
@@ -470,7 +470,7 @@ function createPost() {
   const body = { title, content, categoryId, postedBy: "User" };
   console.log('creating post payload:', body);
 
-  fetch("http://localhost:3001/api/posts", {
+  fetch(`${API_BASE}/api/posts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

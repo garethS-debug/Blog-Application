@@ -1,6 +1,7 @@
 // ...existing code...
 
-const API_URL = "http://localhost:3001/api/posts";
+const API_BASE = "https://blog-application-k261.onrender.com";
+const API_URL = `${API_BASE}/api/posts`;
 
 async function fetchPosts() {
     const container = document.getElementById("posts");
