@@ -1,3 +1,11 @@
+let bcrypt;
+try {
+  bcrypt = require("bcrypt"); // native, fast when valid
+} catch (err) {
+  bcrypt = require("bcryptjs"); // pure JS fallback for deploy portability
+}
+
+
 const { Model, Sequelize, DataTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 
