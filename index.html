@@ -8,7 +8,9 @@
         <link rel="stylesheet" href="./css/style.css">
         <title>Home</title>
         <script src="js/theme-toggle.js" defer></script>
-        <script src="js/login-form.js" defer></script>
+        <script src="js/index.js" defer></script>
+        <!-- <script src="js/login-form.js" defer></script> -->
+         <script src="public/assets/script.js" defer></script>
     </head>
     <body>
     
@@ -29,7 +31,7 @@
             <section id="nav-links" class="nav-links">
             <a class="menu" onclick="closeForm()" href="./index.html" >Home</a>
             <!-- <a class="menu" href="#">Posts</a> -->
-            <a class="menu" onclick="openForm()" href="javascript:void(0)">Login</a>
+            <a class="menu" id="loginBtn" onclick="openForm()" href="javascript:void(0)">Login</a>
             <!-- <a class="menu" href="./about.html">About</a>
             <a class="menu" href="./contact.html">Contact</a> -->
             </section>
@@ -41,26 +43,86 @@
 
     <div class="background">
     <main>
+
+
+
 <!-- The form -->
 <div class="form-popup" id="myForm">
-  <form action="/account.html" class="form-container">
+  <!-- <form action="/account.html" class="form-container"> -->
+    <form class="form-container" onsubmit="return false;">
     <h1>Login</h1>
 
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+    <!-- <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" id="login-email" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="psw" id="login-password" required>
 
-    <button type="submit" class="btn" id="loginBtn">Login</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    <button type="submit" class="btn" onclick="login()" id="loginBtn">Login</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button> -->
+        
+    
+    
+        <div class="container" id="auth-container">
+            <h2>Register</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button type="button" onclick="register()">Register</button>
+            <hr>
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button type="button" onclick="login()">Login</button>
+        </div>
+
   </form>
 </div>
         
 
-   <section id="contact" class="contact">
+
+
+  <section id="posts-section" class="posts">
             <!-- contact form section -->
-       <div class="row">
+
+<div class="container hidden" id="app-container">
+        <!-- <h2>Welcome</h2>
+        <button onclick="logout()">Logout</button>
+        <hr> -->
+        <h2>Create a Post</h2>
+        <input type="text" id="post-title" placeholder="Title">
+        <textarea id="post-content" placeholder="Content"></textarea>
+
+        <select id="post-category">
+  <option value="1">General</option>
+  <option value="2">Announcements</option>
+</select>
+
+        <button onclick="createPost()">Submit Post</button>
+        <hr>
+            <h2>Posts</h2>
+    <button onclick="fetchPosts()">Load Posts</button>
+    </div>
+
+  <div class="container" id="posts-container">
+
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+
+  </div>
+</div>
+
+
+    <div id="posts"></div>
+    </div>
+
+
+
+
+       <!-- <div class="row">
   <div class="leftcolumn">
     <div class="card">
       <h2>TITLE HEADING</h2>
@@ -92,7 +154,7 @@
       <p>Some text..</p>
     </div>
   </div>
-</div>
+</div> -->
 
         
         
